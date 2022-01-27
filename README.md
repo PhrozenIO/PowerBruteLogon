@@ -24,26 +24,64 @@ Invoke-BruteLogonList
 Invoke-BruteAvailableLogons
 ```
 
-##### Parameters
+#### Invoke-BruteLogonAccount
 
-* `Username` (MANDATORY): Target Microsoft Windows User Account (Existing + Enabled)
-* `WordList` (MANDATORY): Plain text file containg the list of password to test
+Attempt to recover the password of a single defined Windows User Account.
+
+##### Parameters
 
 | Parameter          | Type             | Default    | Description  |
 |--------------------|------------------|------------|--------------|
 | Username           | String           | None       | Target Microsoft Windows local user account  |
-| WordList           | String           | None       | Wordlist file location containing password candidates |
+| WordList           | String           | None       | Text file location containing password candidates |
 
 ##### Example
 
 ```powershell
 Invoke-BruteLogonAccount -Username "darkcodersc" -Wordlist "C:\Temp\Wordlist.txt"`
 ```
-`Invoke-BruteLogonAccount -Username "darkcodersc" -Wordlist "C:\Temp\Wordlist.txt"`
 
 ![Invoke-BruteLogonAccount](images/invoke-brutelogonaccount.png)
 
-#### `Invoke-BruteLogonList`
+#### Invoke-BruteLogonList
+
+Attempt to recover the password of a list of Windows User Account.
+
+##### Parameters
+
+| Parameter          | Type             | Default    | Description  |
+|--------------------|------------------|------------|--------------|
+| UserList           | String           | None       | Text file location containing user candidates  |
+| WordList           | String           | None       | Text file location containing password candidates |
+
+ ##### Example
+
+```powershell
+Invoke-BruteLogonList -UserList "C:\Temp\users.txt" -WordList "C:\Temp\Wordlist.txt"
+```
+
+ ![Invoke-BruteLogonAccount](images/invoke-brute-logon-list.png)
+
+#### Invoke-BruteLogonList
+
+Attempt to recover the password of all available local Windows User Accounts.
+
+##### Parameters
+
+| Parameter          | Type             | Default    | Description  |
+|--------------------|------------------|------------|--------------|
+| IgnoreUsers        | Array Of String  | None       | A list of usernames to ignore  |
+| WordList           | String           | None       | Text file location containing password candidates |
+
+##### Example
+
+```powershell
+Invoke-BruteAvailableLogons -WordList "C:\Temp\Wordlist.txt"
+
+Invoke-BruteAvailableLogons -WordList "C:\Temp\Wordlist.txt" -IgnoreUsers "Phrozen"
+```
+
+![Invoke-BruteLogonAccount](images/invoke-bruteavailablelogons.png)
 
 ## Account Lockout Behaviour
 
