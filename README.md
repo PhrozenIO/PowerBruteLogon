@@ -14,7 +14,69 @@ You can use this PowerShell Application whether as a PowerShell Script or as a P
 
 ### Import a new PowerShell Module (Generic Explanation)
 
+To be available, the module must first be present in a registered module path.
+
+You can list module paths with following command:
+
+```powershell
+Write-Output $env:PSModulePath
+```
+
+Example Output:
+
+```
+C:\Users\Phrozen\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+```
+
+Copy the module file `<module_name>.psm1` to desired module path.
+
+You can use bellow command to check if your module was successfully imported:
+
+```powershell
+Get-Module -ListAvailable
+```
+
+Example Output:
+
+```
+PS C:\Users\Phrozen\Desktop> Get-Module -ListAvailable
+
+
+    Directory: C:\Users\Phrozen\Documents\WindowsPowerShell\Modules
+
+
+ModuleType Version    Name                                ExportedCommands
+---------- -------    ----                                ----------------
+Manifest   <version>  <module_name>                       <available_exported_commands>
+
+<..snip..>
+```
+
+If you don't see them, run the following commands and check back.
+
+```powershell
+Import-Module <module_name>
+
+Import-Module <module_name>
+```
+
 ### Import a new PowerShell Script (Generic Explanation)
+
+It is not mandatory to install this application as a PowerShell module (Even if file extension is `*.psm1`)
+
+You can also load it as a PowerShell Script. Multiple methods exists including:
+
+Invoking Commands Using:
+
+```powershell
+IEX (Get-Content .\<module_name>.psm1 -Raw)
+```
+
+Loading script from a remote location: 
+
+```powershell
+IEX (New-Object Net.WebClient).DownloadString('http://127.0.0.1/<module_name>.psm1')
+```
 
 ### Available Functions
 
