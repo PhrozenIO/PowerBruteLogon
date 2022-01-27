@@ -94,8 +94,10 @@ Attempt to recover the password of a single defined Windows User Account.
 
 | Parameter          | Type             | Default    | Description  |
 |--------------------|------------------|------------|--------------|
-| Username           | String           | None       | Target Microsoft Windows local user account  |
-| WordList           | String           | None       | Text file location containing password candidates |
+| Username (*)       | String           | None       | Target Microsoft Windows local user account  |
+| WordList (*)       | String           | None       | Text file location containing password candidates |
+
+`*` = Mandatory Options
 
 ##### Example
 
@@ -113,8 +115,10 @@ Attempt to recover the password of a list of Windows User Account.
 
 | Parameter          | Type             | Default    | Description  |
 |--------------------|------------------|------------|--------------|
-| UserList           | String           | None       | Text file location containing user candidates  |
-| WordList           | String           | None       | Text file location containing password candidates |
+| UserList (*)       | String           | None       | Text file location containing user candidates  |
+| WordList (*)       | String           | None       | Text file location containing password candidates |
+
+`*` = Mandatory Options
 
  ##### Example
 
@@ -133,7 +137,9 @@ Attempt to recover the password of all available local Windows User Accounts.
 | Parameter          | Type             | Default    | Description  |
 |--------------------|------------------|------------|--------------|
 | IgnoreUsers        | Array Of String  | None       | A list of usernames to ignore  |
-| WordList           | String           | None       | Text file location containing password candidates |
+| WordList (*)       | String           | None       | Text file location containing password candidates |
+
+`*` = Mandatory Options
 
 ##### Example
 
