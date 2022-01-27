@@ -2,103 +2,60 @@
 
 PowerBruteLogon is a ported version of [WinBruteLogon](https://github.com/DarkCoderSc/win-brute-logon) in pure PowerShell
 
-Notice that this version is slower than WinBruteLogon but has the advantage to be 100% coded in PowerShell. In a near future, I will try to implement jobs to improve the speed of logon testing.
+⚠️ Notice: this version is slower than [WinBruteLogon](https://github.com/DarkCoderSc/win-brute-logon) but has the serious advantage of being 100% entirely coded in PowerShell. In a near future, password attempts will be distributed to separate threads to speed up the process. Also keep in mind that this method is very noisy, each failed attempt will get logged on Microsoft Windows Event Logs.
 
-Be aware that both WinBruteLogon and PowerBruteLogon are very noisy, each failed attempt will result in a new "Bad Logon" log entry on Windows.
+You might find useful information about the technique used in this PoC [here](https://www.phrozen.io/paper/proof-of-concept/bruteforce-windows-logon-poc)
 
-For more information about the whole concept behind this project, please read the following [article](https://www.phrozen.io/paper/proof-of-concept/bruteforce-windows-logon-poc)
+---
 
 ## Usage
 
-You can use this script both as a PowerShell Module or Raw Script (Pasted, from Encoded Base64 String, DownloadString(...) etc...).
+You can use this PowerShell Application whether as a PowerShell Script or as a PowerShell Module.
 
-### As a Module
+### Import a new PowerShell Module (Generic Explanation)
 
-Choose a registered PowerShell Module location (see `echo $env:PSModulePath`)
+### Import a new PowerShell Script (Generic Explanation)
 
-Create a folder called `PowerBruteLogon` and place the `PowerBruteLogon.psm1` file inside the new folder.
+### Available Functions
 
-Open a new PowerShell Window and enter `Import-Module PowerBruteLogon`
-
-The module should be imported with available functions
-
-* Invoke-BruteLogonAccount
-* Invoke-BruteLogonList
-* Invoke-BruteAvailableLogons
-
-### As a Raw Script
-
-You can import this script alternatively by:
-
-* Pasting the whole code to a new PowerShell window
-* Importing a Base64 encoded version of the code through `IEX/Invoke-Expression`
-* Remote Location through `DownloadString(...)` then `IEX/Invoke-Expression`
-* Your imagination
-
-### Available Commands
-
-#### `Invoke-BruteLogonAccount`
-
-Attempt to recover the password of a single available and enabled Microsoft Windows User Account.
+```PowerShell
+Invoke-BruteLogonAccount
+Invoke-BruteLogonList
+Invoke-BruteAvailableLogons
+```
 
 ##### Parameters
 
 * `Username` (MANDATORY): Target Microsoft Windows User Account (Existing + Enabled)
 * `WordList` (MANDATORY): Plain text file containg the list of password to test
 
+| Parameter          | Type             | Default    | Description  |
+|--------------------|------------------|------------|--------------|
+| Username           | String           | None       | Target Microsoft Windows local user account  |
+| WordList           | String           | None       | Wordlist file location containing password candidates |
+
 ##### Example
 
+```powershell
+Invoke-BruteLogonAccount -Username "darkcodersc" -Wordlist "C:\Temp\Wordlist.txt"`
+```
 `Invoke-BruteLogonAccount -Username "darkcodersc" -Wordlist "C:\Temp\Wordlist.txt"`
 
 ![Invoke-BruteLogonAccount](images/invoke-brutelogonaccount.png)
 
 #### `Invoke-BruteLogonList`
 
-Attempt to recover the password of a list of available and enabled Microsoft Windows User Accounts.
-
-##### Parameters
-
-* `UserList` (MANDATORY): Plain text file containing the list of user account to test
-* `WordList` (MANDATORY): Plain text file containing the list of password to test
-
-##### Example
-
-`Invoke-BruteLogonList -UserList "C:\Temp\users.txt" -WordList "C:\Temp\Wordlist.txt"`
-
-![Invoke-BruteLogonAccount](images/invoke-brute-logon-list.png)
-
-#### `Invoke-BruteAvailableLogons`
-
-Probably the best option, attempt to recover the password of available and enabled local accounts.
-
-You can specifiy a list of user to ignore.
-
-##### Parameters
-
-* `WordList` (MANDATORY): Plain text file containing the list of password to test
-* `IgnoreUsers` (OPTIONAL): A list of user to ignore during user lookup
-
-##### Examples
-
-`Invoke-BruteAvailableLogons -WordList "C:\Temp\Wordlist.txt"`
-
-`Invoke-BruteAvailableLogons -WordList "C:\Temp\Wordlist.txt" -IgnoreUsers "Phrozen"`
-
-![Invoke-BruteLogonAccount](images/invoke-bruteavailablelogons.png)
-
 ## Account Lockout Behaviour
 
-PowerBruteLogon supports account lockout detection. When enabled (recommended), after a certain amount of fail attempt it will try to lookup for account lockout and notify to screen.
+PowerBruteLogon supports account lockout detection. When account lockout is configured on Windows (⚠️ **recommended**).
 
-Example:
-
-`Invoke-BruteAvailableLogons -WordList "C:\Temp\Wordlist.txt"`
+You will see the following message printed on screen:
 
 ![Invoke-BruteLogonAccount](images/account-lockout.png)
 
 ## Remove progress bar
 
-In some circumstances, you might be annoyed by the progressbar. You can safely remove it at this location:
+You might find the PowerShell progressbar ennoying, for this reason you might want to remove bellow code:
 
 ```PowerShell
 # Display Progress / Stats
@@ -108,3 +65,27 @@ $status = [string]::Format("$perc% Complete:{0}/{1}", $currPos, $candidateCount)
 
 Write-Progress -Activity $activity -Status $status -PercentComplete $perc
 ```
+
+---
+
+# Disclaimer
+
+We are doing our best to prepare the content of this app. However, PHROZEN SASU and / or
+Jean-Pierre LESUEUR cannot warranty the expressions and suggestions of the contents,
+as well as its accuracy. In addition, to the extent permitted by the law, 
+PHROZEN SASU and / or Jean-Pierre LESUEUR shall not be responsible for any losses
+and/or damages due to the usage of the information on our app.
+
+By using our app, you hereby consent to our disclaimer and agree to its terms.
+
+Any links contained in our app may lead to external sites are provided for
+convenience only. Any information or statements that appeared in these sites
+or app are not sponsored, endorsed, or otherwise approved by PHROZEN SASU and / or
+Jean-Pierre LESUEUR. For these external sites, PHROZEN SASU and / or Jean-Pierre LESUEUR
+cannot be held liable for the availability of, or the content located on or through it.
+Plus, any losses or damages occurred from using these contents or the internet
+generally.
+
+---
+
+Made with ❤️ in 🇫🇷
