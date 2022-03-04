@@ -80,7 +80,7 @@ function Find-WindowsUser
 
     $userObject = (Get-LocalUser -Name $Username -ErrorAction SilentlyContinue)
 
-    if ($userObject -eq $null)
+    if ($null -eq $userObject)
     {
         $result = $false
     }
@@ -170,7 +170,7 @@ function Invoke-BruteLogon
             $reader = New-Object -TypeName System.IO.StreamReader -ArgumentList $UserList
             try
             {      
-                while (($line = $reader.ReadLine()) -ne $null)
+                while ($null -ne ($line = $reader.ReadLine()))
                 {       
                     $user = $line.Trim()
 
@@ -224,7 +224,7 @@ function Invoke-BruteLogon
     $reader = New-Object -TypeName System.IO.StreamReader -ArgumentList $WordList
     try
     {
-        $candidateCount = (Get-Content -Path $WordList | Measure-Object –Line).Lines
+        $candidateCount = (Get-Content -Path $WordList | Measure-Object -Line).Lines
 
         # Brutus !
         Write-Host ([string]::Format("Start bruteforcing {0} user account(s)...", $targetUsers.Count))
@@ -237,7 +237,7 @@ function Invoke-BruteLogon
             $currPos = 0
             try
             {
-                while (($candidate = $reader.ReadLine()) -ne $null)
+                while ($null -ne ($candidate = $reader.ReadLine()))
                 {
                     $currPos++                
 
@@ -357,8 +357,6 @@ function Invoke-BruteAvailableLogons
     Invoke-BruteLogon -Mode 3 -IgnoreUsers $IgnoreUsers -WordList $WordList
 }
 
-# Placing the "Export-ModuleMember" in a Try/Catch make this script working outside PowerShell Module.
-# Example: IEX([System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("<...This script in b64 encoded...>"))) 
 try {    
     Export-ModuleMember -Function Invoke-BruteLogonAccount
     Export-ModuleMember -Function Invoke-BruteLogonList
